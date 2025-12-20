@@ -146,29 +146,6 @@ Total processed: 42
 2025/12/20 10:30:53 Stats - Active: 0, Total: 1, Queue: 0/100
 ```
 
-## Testing Under Load
-
-Test with Apache Bench:
-```bash
-# Install ab (Apache Bench)
-brew install apache2  # macOS
-sudo apt-get install apache2-utils  # Linux
-
-# Run 1000 requests, 50 concurrent
-ab -n 1000 -c 50 http://localhost:8080/
-```
-
-Watch the server handle backpressure when queue fills up!
-
-## Production Considerations
-
-- **Worker count**: Set based on CPU cores (e.g., `runtime.NumCPU()`)
-- **Queue size**: Balance memory vs burst capacity (typical: 2-10x worker count)
-- **Timeouts**: Tune based on expected request/response sizes
-- **Monitoring**: Add Prometheus metrics for production observability
-- **Load balancing**: Run multiple instances behind nginx/HAProxy
-- **OS tuning**: Increase `ulimit -n` and `net.core.somaxconn` for high load
-
 ## Project Structure
 
 ```
@@ -193,6 +170,3 @@ Watch the server handle backpressure when queue fills up!
   - `Shutdown()`: Graceful shutdown with timeout
   - `GetStats()`: Real-time statistics
 
-## License
-
-MIT (or specify your license)
