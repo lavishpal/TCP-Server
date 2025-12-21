@@ -146,29 +146,6 @@ Total processed: 42
 2025/12/20 10:30:53 Stats - Active: 0, Total: 1, Queue: 0/100
 ```
 
-## Testing Under Load
-
-Test with Apache Bench:
-```bash
-# Install ab (Apache Bench)
-brew install apache2  # macOS
-sudo apt-get install apache2-utils  # Linux
-
-# Run 1000 requests, 50 concurrent
-ab -n 1000 -c 50 http://localhost:8080/
-```
-
-Watch the server handle backpressure when queue fills up!
-
-## Production Considerations
-
-- **Worker count**: Set based on CPU cores (e.g., `runtime.NumCPU()`)
-- **Queue size**: Balance memory vs burst capacity (typical: 2-10x worker count)
-- **Timeouts**: Tune based on expected request/response sizes
-- **Monitoring**: Add Prometheus metrics for production observability
-- **Load balancing**: Run multiple instances behind nginx/HAProxy
-- **OS tuning**: Increase `ulimit -n` and `net.core.somaxconn` for high load
-
 ## Project Structure
 
 ```
@@ -181,18 +158,5 @@ Watch the server handle backpressure when queue fills up!
 └── .gitignore               # Git ignore patterns
 ```
 
-### Key Files
 
-- **`main.go`**: Server setup, listener configuration, signal handling, and connection acceptance loop
-- **`threadpool/threadpool.go`**: Complete thread pool implementation with:
-  - `Config`: Configuration struct for pool settings
-  - `ThreadPool`: Main pool structure with worker management
-  - `New()`: Factory function to create a new pool
-  - `Start()`: Initializes all workers
-  - `Submit()`: Adds connections to the queue
-  - `Shutdown()`: Graceful shutdown with timeout
-  - `GetStats()`: Real-time statistics
 
-## License
-
-MIT (or specify your license)
